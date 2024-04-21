@@ -1,5 +1,3 @@
-// Copyright 2020 the Denoify authors. All rights reserved. MIT License.
-
 // 1.42.1
 // const keys = ["internal", "resources", "close", "metrics", "Process", "run", "isatty", "writeFileSync", "writeFile", "writeTextFileSync", "writeTextFile", "readTextFile", "readTextFileSync", "readFile", "readFileSync", "watchFs", "chmodSync", "chmod", "chown", "chownSync", "copyFileSync", "cwd", "makeTempDirSync", "makeTempDir", "makeTempFileSync", "makeTempFile", "memoryUsage", "mkdirSync", "mkdir", "chdir", "copyFile", "readDirSync", "readDir", "readLinkSync", "readLink", "realPathSync", "realPath", "removeSync", "remove", "renameSync", "rename", "version", "build", "statSync", "lstatSync", "stat", "lstat", "truncateSync", "truncate", "ftruncateSync", "ftruncate", "futime", "futimeSync", "errors", "inspect", "env", "exit", "execPath", "Buffer", "readAll", "readAllSync", "writeAll", "writeAllSync", "copy", "iter", "iterSync", "SeekMode", "read", "readSync", "write", "writeSync", "File", "FsFile", "open", "openSync", "create", "createSync", "stdin", "stdout", "stderr", "seek", "seekSync", "connect", "listen", "loadavg", "connectTls", "listenTls", "startTls", "shutdown", "fstatSync", "fstat", "fsyncSync", "fsync", "fdatasyncSync", "fdatasync", "symlink", "symlinkSync", "link", "linkSync", "permissions", "Permissions", "PermissionStatus", "serveHttp", "serve", "resolveDns", "upgradeWebSocket", "utime", "utimeSync", "kill", "addSignalListener", "removeSignalListener", "refTimer", "unrefTimer", "osRelease", "osUptime", "hostname", "systemMemoryInfo", "networkInterfaces", "consoleSize", "gid", "uid", "Command", "ChildProcess", "test", "bench", "pid", "ppid", "noColor", "args", "mainModule"]
 // const functionKeys = ["resources", "close", "metrics", "Process", "run", "isatty", "writeFileSync", "writeFile", "writeTextFileSync", "writeTextFile", "readTextFile", "readTextFileSync", "readFile", "readFileSync", "watchFs", "chmodSync", "chmod", "chown", "chownSync", "copyFileSync", "cwd", "makeTempDirSync", "makeTempDir", "makeTempFileSync", "makeTempFile", "memoryUsage", "mkdirSync", "mkdir", "chdir", "copyFile", "readDirSync", "readDir", "readLinkSync", "readLink", "realPathSync", "realPath", "removeSync", "remove", "renameSync", "rename", "statSync", "lstatSync", "stat", "lstat", "truncateSync", "truncate", "ftruncateSync", "ftruncate", "futime", "futimeSync", "inspect", "exit", "execPath", "Buffer", "readAll", "readAllSync", "writeAll", "writeAllSync", "copy", "iter", "iterSync", "read", "readSync", "write", "writeSync", "File", "FsFile", "open", "openSync", "create", "createSync", "seek", "seekSync", "connect", "listen", "loadavg", "connectTls", "listenTls", "startTls", "shutdown", "fstatSync", "fstat", "fsyncSync", "fsync", "fdatasyncSync", "fdatasync", "symlink", "symlinkSync", "link", "linkSync", "Permissions", "PermissionStatus", "serveHttp", "serve", "resolveDns", "upgradeWebSocket", "utime", "utimeSync", "kill", "addSignalListener", "removeSignalListener", "refTimer", "unrefTimer", "osRelease", "osUptime", "hostname", "systemMemoryInfo", "networkInterfaces", "consoleSize", "gid", "uid", "Command", "ChildProcess", "test", "bench"]
@@ -121,7 +119,7 @@ class Stderr {
     }
 }
 
-globalThis.Deno = globalThis.Deno
+const Deno = globalThis.Deno
     ? globalThis.Deno
     : {
         mainModule: "file:///fake/$deno$repl.ts",
@@ -291,13 +289,15 @@ globalThis.Deno = globalThis.Deno
         osUptime() {},
         hostname() { return "fake" },
         systemMemoryInfo() {
-            total: 17179869184,
-            free: 77104,
-            available: 3279456,
-            buffers: 0,
-            cached: 0,
-            swapTotal: 18253611008,
-            swapFree: 878313472
+            return {
+                total: 17179869184,
+                free: 77104,
+                available: 3279456,
+                buffers: 0,
+                cached: 0,
+                swapTotal: 18253611008,
+                swapFree: 878313472
+            }
         },
         networkInterfaces() { return [] },
         consoleSize() {
@@ -411,8 +411,6 @@ export const symlinkSync            = Deno.symlinkSync
 export const link                   = Deno.link
 export const linkSync               = Deno.linkSync
 export const permissions            = Deno.permissions
-export const Permissions            = Deno.Permissions
-export const PermissionStatus       = Deno.PermissionStatus
 export const serveHttp              = Deno.serveHttp
 export const serve                  = Deno.serve
 export const resolveDns             = Deno.resolveDns
@@ -441,3 +439,15 @@ export const ppid                   = Deno.ppid
 export const noColor                = Deno.noColor
 export const args                   = Deno.args
 export const mainModule             = Deno.mainModule
+
+// for-non deno environments
+try {
+    globalThis.Deno = Deno
+} catch (error) {}
+
+const DenoPermissions = Deno.Permissions
+const DenoPermissionStatus = Deno.PermissionStatus
+export {
+    DenoPermissions as Permissions,
+    DenoPermissionStatus as PermissionStatus,
+}
