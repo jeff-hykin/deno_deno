@@ -311,6 +311,8 @@ const Deno = globalThis.Deno
         bench() {},
     }
 
+export default Deno
+
 export const internal               = Deno.internal
 export const resources              = Deno.resources
 export const close                  = Deno.close
