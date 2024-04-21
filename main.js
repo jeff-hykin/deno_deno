@@ -36,7 +36,7 @@ class NetworkUnreachable extends Error {}
 class NotADirectory extends Error {}
 
 class PermissionStatus {
-    constructor(public state: "granted" | "denied" | "prompt") {}
+    constructor(state) {}
 }
 class Permissions {
     async query(){
