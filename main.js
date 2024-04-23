@@ -6,7 +6,7 @@
 const fakeEnv = {
     HOME: "/fake/home",
     SHELL: "sh",
-    PWD: "/fake/pwd",
+    PWD: "./",
 }
 class NotFound extends Error {}
 class PermissionDenied extends Error {}

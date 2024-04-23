@@ -5,8 +5,8 @@ Explicitly import deno interfaces to handle versioning and compatibility, while 
 ```ts
 
 // import the Deno 1.42.1 interface, the trailing ".6" is the version of the polyfill on browsers and nodejs
-import Deno from "https://deno.land/x/deno_deno@1.42.1.6/main.js"
-import { readFileSync } from "https://deno.land/x/deno_deno@1.42.1.6/main.js"
+import Deno from "https://deno.land/x/deno_deno@1.42.1.7/main.js"
+import { readFileSync } from "https://deno.land/x/deno_deno@1.42.1.7/main.js"
 
 Deno.exit(0)
 ```
